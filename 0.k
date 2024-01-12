@@ -11,4 +11,8 @@ dldata:{
 
 load:{
  json:{`j?/:0:"5784/noahs-",x,".jsonl"}
- (customers;orders;products)::json'("customers";"orders";"products")}
+ (customers;orders;products)::json'("customers";"orders";"products")
+ customers[`customerid]:_customers[`customerid]
+ orders[`customerid]:_orders[`customerid]
+ orders[`orderid]:_orders[`orderid]
+}
