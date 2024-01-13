@@ -59,7 +59,7 @@ d3:{
  / this produces two people only one of which is male
  custs[1;`phone]}
 
-/ want someone who bought pastries before 5am
+/ want a woman who bought pastries before 5am in 2017 or soon after
 
 d4:{
  times:+`y`M`d`h`m`s!+{`I$" "\@[x;&~^" -:"?x;:;" "]}'orders[`ordered]
