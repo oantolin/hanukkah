@@ -1,4 +1,4 @@
-/ For day 0 you just need to download the data and decrypt.
+/ 0) you just need to download the data and decrypt.
 / The password is the year in the hebrew calendar corresponding
 / to some date in 2017; it could be 5777 or 5778.
 
@@ -17,7 +17,7 @@ load:{
  orders[`orderid]:_orders[`orderid]
 }
 
-/ want a customer whose last name on a phonepad is his number
+/ 1) want a customer whose last name on a phonepad is his number
 
 phone:(`c$"a"+!26)!2+&@[8#3;5 7;+;1]
 
@@ -28,7 +28,7 @@ d1:{
  lastnames:(phone@_:lastname@)'customers[`name]
  *customers[`phone]@&phones~'lastnames}
 
-/ want a JP who had bagels & cleaning supplies in 2017
+/ 2) want a JP who had bagels & cleaning supplies in 2017
 
 d2:{
  bagels:products[`sku]@&{~^(" "\_x)?"bagel"}'products[`desc]
@@ -39,7 +39,7 @@ d2:{
  custs:{{"JP"~x@!2}'x[`name]^\:" .",`c$"a"+!26}#custs
  *custs[`phone]}
 
-/ want a cancer born in the year of the rabbit
+/ 3) want a cancer born in the year of the rabbit
 
 / chinese years don't exactly line up with gregorian ones,
 / so for example one year of the rabbit was from
@@ -59,7 +59,7 @@ d3:{
  / this produces two people only one of which is male
  custs[1;`phone]}
 
-/ want a woman who bought pastries before 5am in 2017 or soon after
+/ 4) want a woman who bought pastries before 5am in 2017 or so
 
 d4:{
  times:+`y`M`d`h`m`s!+{`I$" "\@[x;&~^" -:"?x;:;" "]}'orders[`ordered]
@@ -67,3 +67,6 @@ d4:{
  ords:orders@&(0=2017 2019'times[`y])&(0=2 6'times[`h])&pastries
  custs:({1<{+/x`qty}'x`items}#ords)[`customerid]
  *customers[`phone]@customers[`customerid]??custs}
+
+/ 5) want a lady from Staten Island with lots of cats
+/ and a Noah's Market sweatshirt
