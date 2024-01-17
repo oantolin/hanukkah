@@ -19,13 +19,12 @@ load:{
 
 / 1) want a customer whose last name on a phonepad is his number
 
-phone:(`c$"a"+!26)!2+&@[8#3;5 7;+;1]
-
-lastname:{$[^("Jr.";"II";"III";"IV";"V")?*|x;*|x;x[(#x)-2]]}@" "\
 
 d1:{
+ keypad:(`c$"a"+!26)!2+&@[8#3;5 7;+;1]
+ lastname:{$[^("Jr.";"II";"III";"IV";"V")?*|x;*|x;x[(#x)-2]]}@" "\
  phones:-"0"-customers[`phone]^\:"-"
- lastnames:(phone@_:lastname@)'customers[`name]
+ lastnames:(keypad@_:lastname@)'customers[`name]
  *customers[`phone]@&phones~'lastnames}
 
 / 2) want a JP who had bagels & cleaning supplies in 2017
@@ -36,10 +35,10 @@ d2:{
  ords:&~{(^x[`sku]?z)|&/^x[`sku]?y}[;bagels;cleaner]'orders[`items]
  ords:(2017=`I$4#/:orders[`ordered]@)#ords
  custs:customers@customers[`customerid]?orders[ords;`customerid]
- custs:{{"JP"~x@!2}'x[`name]^\:" .",`c$"a"+!26}#custs
+ custs:{("JP"~2#)'x[`name]^\:" .",`c$"a"+!26}#custs
  *custs[`phone]}
 
-/ 3) want a cancer born in the year of the rabbit
+/ 3) want a cancer born in a year of the rabbit who buys rug cleaner
 
 / chinese years don't exactly line up with gregorian ones,
 / so for example one year of the rabbit was from
@@ -54,8 +53,9 @@ d3:{
  rabbit:7=12!dob[;0]
  cancer:((6=dob[;1])&21<dob[;2])|((7=dob[;1])&23>dob[;2])
  bydob:customers[`customerid]@&rabbit&cancer
- byrug:?orders[`customerid]@&{~&/^x[`sku]?"HOM2761"}'orders[`items]
- custs:customers@&|/'customers[`customerid]=\:2(bydob^)/byrug
+ rug:products[`sku]@products[`desc]?"Rug Cleaner"
+ byrug:?orders[`customerid]@&{~&/^x[`sku]?y}[;rug]'orders[`items]
+ custs:(~^(2(bydob^)/byrug)?@[;`customerid]@)#customers
  / this produces two people only one of which is male
  custs[1;`phone]}
 
