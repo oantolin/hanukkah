@@ -1,0 +1,30 @@
+#+title: Solutions for Hanukkah of Data
+
+[[https://hanukkah.bluebird.sh/5784/][Hanukkah of Data]] is a lovely set of puzzles in which you have to go
+spelunking through a data set to answer questions based on clues
+scattered throughout a detective story about finding a missing rug.
+
+* ngn/k
+
+I'll probably eventually solve it in several languages, but for now I
+only have solutions in [[https://codeberg.org/ngn/k][ngn/k]], which is probably my favorite
+programming language at the moment. It is an open source
+implementation of K6, one of the family of [[https://k.miraheze.org/wiki/Main_Page][K languages]] designed by
+Arthur Whitney. There is an [[https://ngn.bitbucket.io/k/#r][online REPL]] so you can try it without
+installing anything. (I use that online REPL on my phone: Ks are some
+of the few programming languages that are concise enough that I feel
+comfortable coding on the phone with, which is great for when you're
+standing in line somewhere.) These languages are tiny and at the same
+time amazingly practical, a beautiful exercise in minimalism without
+sacrificing convenience.
+
+One thing that makes Ks particularly well suited for Hanukkah of Data
+is the table data structure they have: a table is a vector of
+dictionaries, all with the same keys which are symbols (these
+dictionaries are called rows of the table); tables are compactly
+stored in memory with one vector per key (these vectores are called
+the columns of the dictionary). Tables can be indexed by integers to
+obtain rows or by symbols to obtain columns and are a very handy data
+structure for data munging and SQL-like operations. ngn/k comes with a
+JSON parser and there is a nice [[https://github.com/gitonthescene/ngnk-libs/blob/master/csv][CSV parser]] (take a look at the 3 line
+implementation!) in the [[https://github.com/gitonthescene/ngnk-libs][gitonthescene/ngnk-libs]] library collection.
