@@ -37,13 +37,10 @@ D1 ⇐ { ⟨c⇐customers⟩ :
 # Find a JP who bought bagels in 2017
 
 D2 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
- jpIDs ← c.customerid ⊏˜ / ("J P"≡3↑'a'⊸>⊸/)¨ c.name
- bagelSKUs ← ("Bagel"⊸(∨´⍷)¨ p.desc) / p.sku
- bagelOrderIDs ← (∊⟜bagelSKUs⌾<¨ i.sku) / i.orderid
- id ← (∧´⟨o.orderid∊bagelOrderIDs
-          ("2017"≡4⊸↑)¨o.ordered
-          o.customerid∊jpIDs⟩) / o.customerid
- c.phone ⊑˜ c.customerid⊐id
+ jp ← c.customerid /˜ ("J P"≡3↑'a'⊸>⊸/)¨ c.name
+ bo ← i.orderid /˜ i.sku ∊ p.sku /˜ "Bagel"⊸(∨´⍷)¨ p.desc
+ m ← (o.customerid∊jp) ∧  (o.orderid∊bo) ∧ ("2017"≡4⊸↑)¨o.ordered
+ c.phone ⊑˜ c.customerid ⊐ m/o.customerid
 }
 
 # Find a Cancer born in a year of the rabbit who bought rug
