@@ -15,3 +15,10 @@ Load ⇐ {𝕤
   "customers", "orders", "orders_items", "products"
  ⟩
 }
+
+# String utilities
+
+Split ⇐  ((⊢-˜+`×¬)=)⊔⊢                # from bqncrate
+
+LowerCase ⇐ (('a'-'A')×'A'⊸≤∧≤⟜'Z')⊸+
+
