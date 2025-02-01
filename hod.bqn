@@ -28,8 +28,7 @@ suffixes ← ⟨"I", "II", "III", "IV", "V", "Jr."⟩
 
 LastName ⇐ ¯1⊑·(∊⟜suffixes⌾< ¯1⊸⊑)⊸↓ ' '⊸Split
 
-D1 ⇐ {
- c ← 𝕩.customers
+D1 ⇐ {⟨c⇐customers⟩:
  keypad ← 1+"adgjmptw"⊸⍋¨ LowerCase LastName¨ c.name
  phones ← '0' -˜ '-'⊸≠⊸/¨ c.phone
  ⊑ (phones ≡¨ keypad) / c.phone
