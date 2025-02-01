@@ -55,8 +55,7 @@ D2 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
 D3 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
  [y,m,d] ← ⍉ > •ParseFloat¨∘('-'⊸Split)¨ c.birthdate
  dob ← (7=12|y) ∧ ((m=6)∧d≥22) ∨ ((m=7)∧d≤22)
- rcs ← p.sku /˜ "Rug Cleaner"⊸(∨´⍷)¨ p.desc
- rco ← i.orderid /˜ i.sku ∊ rcs
+ rco ← i.orderid /˜ i.sku ∊ p.sku /˜ "Rug Cleaner"⊸(∨´⍷)¨ p.desc
  brc ← o.customerid /˜ o.orderid ∊ rco
  (dob ∧ c.customerid ∊ brc) / ⍉[c.name, c.birthdate, c.phone]
 }
