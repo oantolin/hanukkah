@@ -45,3 +45,21 @@ D2 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
           o.customerid∊jpIDs⟩) / o.customerid
  c.phone ⊑˜ c.customerid⊐id
 }
+
+# Find a Cancer born in a year of the rabbit who bought rug
+# cleaner
+
+# Chinese years don't exactly line up with Gregorian ones,
+# so for example one year of the rabbit was from 25 January
+# 1963 to 12 February 1964, but if you are a Cancer you must
+# be from the first of those calendar years, i.e. a year
+# that is 7 mod 12. Cancer goes from June 22 to July 22.
+
+D3 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
+ [y,m,d] ← ⍉ > •ParseFloat¨∘('-'⊸Split)¨ c.birthdate
+ dob ← (7=12|y) ∧ ((m=6)∧d≥22) ∨ ((m=7)∧d≤22)
+ rcs ← p.sku /˜ "Rug Cleaner"⊸(∨´⍷)¨ p.desc
+ rco ← i.orderid /˜ i.sku ∊ rcs
+ brc ← o.customerid /˜ o.orderid ∊ rco
+ (dob ∧ c.customerid ∊ brc) / ⍉[c.name, c.birthdate, c.phone]
+}
