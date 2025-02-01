@@ -22,3 +22,14 @@ Split ⇐  ((⊢-˜+`×¬)=)⊔⊢                # from bqncrate
 
 LowerCase ⇐ (('a'-'A')×'A'⊸≤∧≤⟜'Z')⊸+
 
+# Find someone whose last name gives you the phone number on the keypad
+
+suffixes ← ⟨"I", "II", "III", "IV", "V", "Jr."⟩
+
+LastName ⇐ ¯1⊑·(∊⟜suffixes⌾< ¯1⊸⊑)⊸↓ ' '⊸Split
+
+D1 ⇐ {
+ keypad ← 1+"adgjmptw"⊸⍋¨ LowerCase LastName¨ 𝕩.customers.name
+ phones ← '0' -˜ '-'⊸≠⊸/¨ 𝕩.customers.phone
+ ⊑ (phones ≡¨ keypad) / 𝕩.customers.phone
+}
