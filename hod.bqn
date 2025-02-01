@@ -34,4 +34,14 @@ D1 ⇐ {⟨c⇐customers⟩:
  ⊑ (phones ≡¨ keypad) / c.phone
 }
 
+# Find a JP who bought bagels in 2017
+
+D2 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
+ jpIDs ← c.customerid ⊏˜ / ("J P"≡3↑'a'⊸>⊸/)¨ c.name
+ bagelSKUs ← ("Bagel"⊸(∨´⍷)¨ p.desc) / p.sku
+ bagelOrderIDs ← (∊⟜bagelSKUs⌾<¨ i.sku) / i.orderid
+ id←⊑(∧´⟨o.orderid∊bagelOrderIDs
+         ("2017"≡4⊸↑)¨o.ordered
+         o.customerid∊jpIDs⟩) / o.customerid
+ >c.phone⊏˜c.customerid⊐id
 }
