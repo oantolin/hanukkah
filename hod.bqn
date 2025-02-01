@@ -43,5 +43,5 @@ D2 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
  id ← ⊑ (∧´⟨o.orderid∊bagelOrderIDs
             ("2017"≡4⊸↑)¨o.ordered
             o.customerid∊jpIDs⟩) / o.customerid
- >c.phone⊏˜c.customerid⊐id
+ > c.phone ⊏˜ c.customerid⊐id
 }
