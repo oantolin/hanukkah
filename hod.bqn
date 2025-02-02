@@ -59,3 +59,12 @@ D3 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
  brc ← o.customerid /˜ o.orderid ∊ rco
  (dob ∧ c.customerid ∊ brc) / ⍉[c.name, c.birthdate, c.phone]
 }
+
+# Find a woman who bought pastries before 5am circa 2017
+
+D4 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
+ bakery ← o.orderid ∊ i.orderid /˜ i.sku ∊ ("BKY"≡3⊸↑)¨⊸/ p.sku
+ orders ← 4=10⊸×⊸+˝-'0'-⍉11‿12⊸⊏˘>bakery/o.ordered
+ earlybird ← ⊑ ((⌈´⊸=≠¨∘⊔∘⊐)/⍷) orders/bakery/o.customerid
+ c.phone /˜ c.customerid = earlybird
+}
