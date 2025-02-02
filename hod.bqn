@@ -75,6 +75,5 @@ D5 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
  cf ← p.sku /˜ "Cat Food"⊸(∨´⍷)¨ p.desc
  si ← c.customerid /˜ "Staten Island"⊸(∨´⍷)¨c.citystatezip
  sicf ← (o.customerid∊si) ∧ o.orderid∊i.orderid /˜ i.sku∊cf
- sicf /↩ o.customerid
- ⊑ c.phone ⊏˜ c.customerid ⊐ ⌈´⊸=∘⊒⊸/ sicf
+ ⊑ c.phone ⊏˜ c.customerid ⊐ ⌈´⊸=∘⊒⊸/ sicf / o.customerid
 }
