@@ -69,12 +69,12 @@ D4 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
  c.phone /˜ c.customerid = earlybird
 }
 
-# Find a woman from Staten Island that buys lots of cat food
+# Find a woman from Staten Island that buys the most cat food
 
 D5 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
  cf ← p.sku /˜ "Cat Food"⊸(∨´⍷)¨ p.desc
  si ← c.customerid /˜ "Staten Island"⊸(∨´⍷)¨c.citystatezip
  sicf ← (o.customerid∊si) ∧ o.orderid∊i.orderid /˜ i.sku∊cf
- top ← 5↑(⍒∘(≠¨)∘⊔∘⊐⊏⍷) sicf/o.customerid
- (⍉[c.name, c.phone])⊏˜c.customerid ⊐ top
+ sicf /↩ o.customerid
+ ⊑ c.phone ⊏˜ c.customerid ⊐ ⌈´⊸=∘⊒⊸/ sicf
 }
