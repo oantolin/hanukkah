@@ -77,3 +77,12 @@ D5 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
  sicf ← (o.customerid∊si) ∧ o.orderid∊i.orderid /˜ i.sku∊cf
  ⊑ c.phone ⊏˜ c.customerid ⊐ ⌈´⊸=∘⊒⊸/ sicf / o.customerid
 }
+
+# Find someone who uses so many coupons Noah's loses money
+
+D6 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
+ fow ← i.unitprice÷p.wholesalecost⊏˜p.sku⊐i.sku
+ ! o.orderid ≡ ⍷ i.orderid # already lines up!
+ deals ← o.customerid ((+´1⊸>)¨⊐⊸⊔) i.orderid ((+´÷≠)¨⊐⊸⊔) fow
+ c.phone ⊑˜ c.customerid ⊐ (⌈´⊸=deals)/⍷o.customerid
+}
