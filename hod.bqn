@@ -86,3 +86,13 @@ D6 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
  deals ← o.customerid ((+´1⊸>)¨⊐⊸⊔) i.orderid ((+´÷≠)¨⊐⊸⊔) fow
  c.phone ⊑˜ c.customerid ⊐ (⌈´⊸=deals)/⍷o.customerid
 }
+
+# Find someone who made a purchase close in time to person from day 6,
+# of the same item in a different color
+
+D7 ⇐ { ⟨c⇐customers,o⇐orders,i⇐items,p⇐products⟩ :
+ w ← c.customerid ⊑˜ ⊑ c.phone ⊐ <D6 𝕩
+ s ← ⍷ i.sku ⊏˜ i.orderid ⊐ o.orderid /˜ o.customerid = w
+ s /˜↩ > '(' ∊¨ p.desc ⊏˜ p.sku ⊐ s
+ o.customerid ⊏˜ o.orderid ⊐ ⍷ i.orderid /˜ i.sku ∊ s
+}
