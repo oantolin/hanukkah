@@ -9,14 +9,35 @@ data:{
  o:(,"items")^o; o:@[o;!"orderid customerid";"i"$]; o:@[o;,"total";"n"$]
  i:@[i;!"qty orderid";"i"$]; i:@[i;,"unitprice";"n"$];
  p:@[p;,"wholesalecost";"n"$]; p:@[p;,"dimscm";"n"$"|"\:]
- (!"customers orders items products")!(c;o;i;p)
+ (!"customers orders products items")!(c;o;p;i)
 }
 
 / 1) want a customer whose last name on a phonepad is his number
 
-d1:{
- c:x..customers
+d1:{[C;O;P;I]
  keypad:"s"$2+&@[8#3;5 7;+;1]; suffixes:("Jr.";"II";"III";"IV";"V")
- lastnames:sub[""\"c"$97+!26;keypad]_:(*|suffixes^)'" "\c..name
- c..phone@*&lastnames~'sub["-";""]c..phone
-}
+ lastnames:sub[""\"c"$97+!26;keypad]_:(*|suffixes^)'" "\C..name
+ C..phone@*&lastnames~'sub["-";""]C..phone
+}.
+
+/ 2) find a JP who bought bagels in 2017
+d2:{[C;O;P;I]
+ bagels:O..orderid¿I..orderid@&I..sku¿P..sku@&"Bagel"¿´P..desc
+ jps:O..customerid¿C..customerid@&"JP"=+/'rx/[A-Z]/[C..name;2]
+ *C..phone@C..customerid?O..customerid@&("2017"¿´O..shipped)&bagels&jps
+}.
+
+/ 3) find a Cancer born in a year of the rabbit who bought rug cleaner
+
+/ Chinese years don't exactly line up with Gregorian ones, so for
+/ example one year of the rabbit was from 25 January 1963 to 12
+/ February 1964, but if you are a Cancer you must be from the first of
+/ those calendar years, i.e. a year that is 7 mod 12. Cancer goes from
+/ June 22 to July 22.
+
+d3:{[C;O;P;I]
+ (y;m;d):+"i"$"n"$"-"\C..birthdate / "i"$str interprets leading 0 as octal
+ dob:(7=12!y) & ((m=6)&d>21) | ((m=7)&d<23)
+ rcc:O..customerid@&O..orderid¿I..orderid@&I..sku=P..sku@P..desc?"Rug Cleaner"
+ (!"name phone")#C@&dob & C..customerid¿rcc
+}.
