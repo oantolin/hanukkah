@@ -1,6 +1,4 @@
-import "fmt"
-
-pp:fmt.tbl[;10;9;"%.1f"]
+import "fmt"; pp:fmt.pp
 
 data:{
  files:"5784/noahs-"+(!"customers orders orders_items products")+".csv"
@@ -40,4 +38,13 @@ d3:{[C;O;P;I]
  dob:(7=12!y) & ((m=6)&d>21) | ((m=7)&d<23)
  rcc:O..customerid@&O..orderid¿I..orderid@&I..sku=P..sku@P..desc?"Rug Cleaner"
  (!"name phone")#C@&dob & C..customerid¿rcc
+}.
+
+/ Find a woman who bought pastries before 5am circa 2017
+
+d4:{[C;O;P;I]
+ (year;hour):time[;O..ordered;"2006-01-02 15:04:05"]'"year" "hour"
+ bkyords:!(1<)#(I..orderid@&¿c)!+/'=(I..qty*rx/^BKY/I..sku)!c:%I..orderid
+ custs:?O..customerid @& (year<2019) & (hour=4) & O..orderid¿bkyords
+ C..phone @ C..customerid ? *custs
 }.
