@@ -48,3 +48,12 @@ d4:{[C;O;P;I]
  custs:?O..customerid @& (year<2019) & (hour=4) & O..orderid¿bkyords
  C..phone @ C..customerid ? *custs
 }.
+
+/ Find a woman from Staten Island who buys a lot of cat food
+
+d5:{[C;O;P;I]
+ staten:C..customerid@&"Staten Island"¿´C..citystatezip
+ catfood:I..orderid@&I..sku¿P..sku@&"Cat Food"¿´P..desc
+ statcat:O..customerid@&(O..customerid¿staten)&(O..orderid¿catfood)
+ C..phone@C..customerid?(statcat@&¿k)@?/1|/\=k:%statcat
+}.
