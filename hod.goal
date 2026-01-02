@@ -1,25 +1,25 @@
 import "fmt"; pp:fmt.pp
 
 data:{
- files:"5784/noahs-"+(!"customers orders orders_items products")+".csv"
- (c;o;i;p):{{(sub["_";""]@*'x)!1_'x}@csv read x}'files
+ files:"5784/noahs-"+(!"products orders_items customers orders")+".csv"
+ (p;i;c;o):{{(sub["_";""]@*'x)!1_'x}@csv read x}'files
  c:@[c;!"lat long";"n"$]; c:@[c;,"customerid";"i"$]
  o:(,"items")^o; o:@[o;!"orderid customerid";"i"$]; o:@[o;,"total";"n"$]
  i:@[i;!"qty orderid";"i"$]; i:@[i;,"unitprice";"n"$];
  p:@[p;,"wholesalecost";"n"$]; p:@[p;,"dimscm";"n"$"|"\:]
- (!"customers orders products items")!(c;o;p;i)
+ (!"products items customers orders")!(p;i;c;o)
 }
 
-/ 1) want a customer whose last name on a phonepad is his number
+/ 1) Find a customer whose last name on a phonepad is his number
 
-d1:{[C;O;P;I]
+d1:{[P;I;C;O]
  keypad:"s"$2+&@[8#3;5 7;+;1]; suffixes:("Jr.";"II";"III";"IV";"V")
  lastnames:sub[""\"c"$97+!26;keypad]_:(*|suffixes^)'" "\C..name
  C..phone@*&lastnames~'sub["-";""]C..phone
 }.
 
 / 2) find a JP who bought bagels in 2017
-d2:{[C;O;P;I]
+d2:{[P;I;C;O]
  bagels:O..orderid¿I..orderid@&I..sku¿P..sku@&"Bagel"¿´P..desc
  jps:O..customerid¿C..customerid@&"JP"=+/'rx/[A-Z]/[C..name;2]
  *C..phone@C..customerid?O..customerid@&("2017"¿´O..shipped)&bagels&jps
@@ -33,34 +33,34 @@ d2:{[C;O;P;I]
 / those calendar years, i.e. a year that is 7 mod 12. Cancer goes from
 / June 22 to July 22.
 
-d3:{[C;O;P;I]
+d3:{[P;I;C;O]
  (y;m;d):+"i"$"n"$"-"\C..birthdate / "i"$str interprets leading 0 as octal
  dob:(7=12!y) & ((m=6)&d>21) | ((m=7)&d<23)
  rcc:O..customerid@&O..orderid¿I..orderid@&I..sku=P..sku@P..desc?"Rug Cleaner"
  (!"name phone")#C@&dob & C..customerid¿rcc
 }.
 
-/ Find a woman who bought pastries before 5am circa 2017
+/ 4) Find a woman who bought pastries before 5am circa 2017
 
-d4:{[C;O;P;I]
+d4:{[P;I;C;O]
  (year;hour):time[;O..ordered;"2006-01-02 15:04:05"]'"year" "hour"
  bkyords:!(1<)#(I..orderid@&¿c)!+/'=(I..qty*rx/^BKY/I..sku)!c:%I..orderid
  custs:?O..customerid @& (year<2019) & (hour=4) & O..orderid¿bkyords
  C..phone @ C..customerid ? *custs
 }.
 
-/ Find a woman from Staten Island who buys a lot of cat food
+/ 5) Find a woman from Staten Island who buys a lot of cat food
 
-d5:{[C;O;P;I]
+d5:{[P;I;C;O]
  staten:C..customerid@&"Staten Island"¿´C..citystatezip
  catfood:I..orderid@&I..sku¿P..sku@&"Cat Food"¿´P..desc
  statcat:O..customerid@&(O..customerid¿staten)&(O..orderid¿catfood)
  C..phone@C..customerid?(statcat@&¿key)@?/1|/\=key:%statcat
 }.
 
-/ Find someone who uses so many coupons Noah's loses money
+/ 6) Find someone who uses so many coupons Noah's loses money
 
-d6:{[C;O;P;I]
+d6:{[P;I;C;O]
  fow:I..unitprice%P..wholesalecost@P..sku?I..sku / fow = fraction of wholesale
  avgfow:{(+/x)%#x}'=fow!O..orderid?I..orderid
  C..phone@deals?|/deals:(+/1>)'=avgfow!C..customerid?O..customerid
