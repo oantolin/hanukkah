@@ -55,5 +55,13 @@ d5:{[C;O;P;I]
  staten:C..customerid@&"Staten Island"¿´C..citystatezip
  catfood:I..orderid@&I..sku¿P..sku@&"Cat Food"¿´P..desc
  statcat:O..customerid@&(O..customerid¿staten)&(O..orderid¿catfood)
- C..phone@C..customerid?(statcat@&¿k)@?/1|/\=k:%statcat
+ C..phone@C..customerid?(statcat@&¿key)@?/1|/\=key:%statcat
+}.
+
+/ Find someone who uses so many coupons Noah's loses money
+
+d6:{[C;O;P;I]
+ fow:I..unitprice%P..wholesalecost@P..sku?I..sku / fow = fraction of wholesale
+ avgfow:{(+/x)%#x}'=fow!O..orderid?I..orderid
+ C..phone@deals?|/deals:(+/1>)'=avgfow!C..customerid?O..customerid
 }.
