@@ -65,3 +65,16 @@ d6:{[P;I;C;O]
  avgfow:{(+/x)%#x}'=fow!O..orderid?I..orderid
  C..phone@deals?|/deals:(+/1>)'=avgfow!C..customerid?O..customerid
 }.
+
+/ 7) Find someone who bought the same item as the bargain hunter
+/ from day 6, but in a different color
+
+/ The items that come in different colors are those whose SKU starts
+/ with COL (except for COL0041).
+
+d7:{(P;I;C;O):x;
+ color:(|/"COL"¿´)'=I..sku!O..orderid?I..orderid
+ bh:O..customerid=C..customerid@C..phone?d6 x
+ bhcolortimes:(times:{x[0;15]}'O..ordered)@&color&bh
+ *C..phone@C..customerid?O..customerid@&color&(times¿bhcolortimes)&~bh
+}
